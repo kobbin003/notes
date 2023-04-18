@@ -1,0 +1,34 @@
+BACKEND API TESTING:
+
+1. install and configure jest.
+- installation: npm i jest --save-dev
+- configure: 
+	- use globalsetup and globalTeardown to start server connected to test-database and close server, respectively.
+	- use "jest" key in package.json :
+		- point the path to globalSetUp and globalTearDown files. 
+		- set verbose: true[to get comment on each test]
+	
+
+2. set a separate url of database for test.
+	- create a separate url for database by creating a separate .env file.(.env.test)
+	- select the .env file through the script by adding the following command:
+	 < dotenv -e .env.test ...rest_commands >
+
+3. install axios/node-fetch to fetch from the GRAPHQL_API_to_be_tested.
+						[Its url will be the one started from the globalSetUp file.]
+	*** you can use apolloserver to fetch, BUT the server must be make from apolloserver too.
+	    Therefore in case of graphql-yoga server, use node-fetch.
+
+4. run the test.
+	set script to this:
+	"test" : "test": "NODE_OPTIONS=--experimental-vm-modules dotenv -e .env.test npx jest --watch"
+	
+		- experimental-vm-modules ---> enables esm(ecmascript module)
+		- dotenv -e .env.test ---> selects the secret keys set in .env.test file
+		- npx jest ---> runs jest
+		- --watch ---> enables watchmode for jest(i.e it reruns on every save)
+
+--------------------------------- UNIT TESTING V/S INTEGRATION TESTING --------------------------------------------
+unit testing: testing modules/functions used in routes.
+
+integration testing: testing the api by connecting to database(test) and making queries to the said api route.

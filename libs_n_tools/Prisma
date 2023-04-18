@@ -1,0 +1,142 @@
+PRISMA:
+
+PRISMA ISSUES:
+SO I created a nhost app(postgres database) and linked it with:
+a. dbeaver.
+b. prisma
+
+case a: dbeaver:-
+-I create a table in nhost UI
+- connect the nhost app with dbeaver
+- dbeaver gets updated with the table that I created in nhost app
+- I create a new table in dbeaver
+- this table does not show up in the UI of the app in nhost.
+- But when I pull the db in a prisma app, both the table shows up in prisma schema.
+
+Likewise in case b: prisma:-
+- -I create a table in nhost UI
+- connect the nhost app with prisma app
+- pull db from the nhost database
+- schema.prisma gets updated with the model of the table created in nhost UI
+- I add a new table in my schema.prisma 
+- I db push it
+- this table does not show up in the UI of the app in nhost.
+- i delete both the table from schema.prisma
+- i db pull from the nhost database
+- both the table shows up in prisma.schema
+
+I think maybe the problem is in the front end, the UI should get updated with the new data.
+
+
+---------------------------------------------------- ANDRE MEAD: -----------------------------------------------------
+
+Use prisma1;
+INSTALLATION(install globally): npm install -g prisma1
+
+1. set up postgresql database in cloud (heroku/nhost)
+2. connect cloud app with postgres client(pgadmin/dbeaver)
+3. install docker-ce and docker compose.
+
+---------------------------------------------------- INSTALLATIONS: -----------------------------------------------------
+1. npm install prisma --save-dev
+2. npx prisma init --datasource-provider postgresql
+postgres://postgres:kobprismaPass3@ymsmpnxgppccdroaxhir.db.ap-south-1.nhost.run:5432/ymsmpnxgppccdroaxhir?schema=public
+
+step two will create a 'prisma' folder with 'schema.prisma' inside and an .env file.
+- inside the '.env' file assign the DATABASE_URL with the connection string provided by nhost
+
+3. to update the database with the schema in 'schema.prisma' file
+- npx prisma migrate dev --name init
+OR
+- npx prisma db push( with nhost db push works!!!)
+<<< Ths will sync the prisma schema with your database(nhost)
+
+4. npx prisma db pull
+this will pull the db from the nhost database and assign the model inside the 'schema.prisma' file 
+
+---------------------------------------------------- MODELS: -----------------------------------------------------
+A.K.A field attributes
+- @ is used as prefix for constraints A.K.A field attributes
+- @@ is called block attributes
+e.g user Int UNIQUE  ---in schema.prism--->>> user Int @unique
+
+likewise 
+? -> not NOT NULL/ OPTIONAL
+
+@default(value) -> default <value>
+
+@default(autoincrement()) -> SERIAL
+
+@relation -> to create relation between to model fields using foreign key and a key of the model.
+---arguments---: 
+	name-> name of the relation.[both  side of the relation should be named the same)
+		used Sometimes to disambiguate a relation.
+	fields -> any field of the referenced(the other side of the relation model).
+	references-> any field of the referencer(current model).
+	map -> Defines a custom name for the foreign key in the database..
+	onDelete [this is to be set in the referencer side only] -> 
+	     CASCADE: if references is deleted, then fields gets deleted too.
+	     SET NULL: if references is deleted, then fields is set to null. (provided the field is optional)
+	  
+
+@id -> like primary key
+
+@map -> to name the field in the database differently than in the schema
+
+@ignore -> to ignore a field
+
+@updatedAt -> Automatically stores the time when a record was last updated. If you do not supply a time yourself, the Prisma Client will automatically set the value for fields with this attribute.
+------------------------------------------------------- PROBLEMS FACED -------------------------------------------------
+
+>>>>>> PROBLEM:
+How to create multiple relationships to the same field:
+e.g
+model Comment {
+post   Post   @relation(fields: [id], references: [id])
+author User   @relation(fields: [id], references: [id])
+}
+  
+  This will error:"Please provide a different name using the `map` argument."
+  
+>>>>>> SOLUTION:
+- use map
+model COmment {
+post   Post   @relation(fields: [id], references: [id], map: "commentsPost")
+author User   @relation(fields: [id], references: [id], map: "commentsUser")
+}
+
+----------------------------------------------- SELECT V?S INCLUDE -----------------------------------------------------
+
+select -> which fields of the current model to return.
+include -> which fields of the "relation fields" of the current model to return .
+	if inclued:true --> it returns every field of the relation field
+
+------------------------------------------------------------------------------------------------------------------------
+
+return on database: relationId of 1 side of 1-n relationship
+return on graphql playground: the whole object of the relation field.
+
+--------------------------------------------- findUnique V/S findFirst -------------------------------------------------
+
+findUnique vs findFirst
+former: only on unique field(i.e fields with @id or @unique attributes)
+later: on any field.[use this for nested query of a relation field.]
+
+-----------------------------------------------------------------------------------------------------------------------
+
+where:{
+AND:[{
+id:some_id
+},
+{
+name:some_name
+}]
+
+--- IS EQUAL TO --->
+
+where:{
+id:some_id,
+name:some_name
+}
+
+

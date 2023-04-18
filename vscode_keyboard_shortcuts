@@ -1,0 +1,23 @@
+KEYBOARD SHORTCUTS:
+- ctrl + shift + N = new window.
+- shift + alt + enter = insert new line above.
+- ctrl + enter = insert new line below.
+- ctrl + shift + alt + ' = copy line up. 
+- ctrl + shift + alt + / = copy line down.  
+- ctrl + shift + k = delete the line.
+- ctrl + up/down = scroll.
+- alt + up/down = move line up and down.
+- alt + click = multiple cursor.
+- ctlr + shift + [/] = toggle between open and fold.
+- ctrl + -/= = zoom in/out.
+- ctrl + ` = toggle terminal.
+- alt + enter = put cursor at the end of every "ctrl + f" word.
+// OR
+- ctrl + shift + l = multiple cursor over the word where the cursor is.
+- ctrl + L = select whole lines.
+- ctrl + b = toggle sidebar explorer.
+- click ------to-----> shift + click = selects the region
+- ctrl + shift + n = new instance of vscode 
+- ctrl + k ctrl + 0 = fold all
+- ctrl + k ctrl + j = unfold all
+- ctrl + l = higlight/select a line completely

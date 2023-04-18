@@ -1,0 +1,81 @@
+> ------------------------------------------ INSTALLATIONS ---------------------------------------------------
+1. docker-ce
+https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-22-04
+
+<<< remember to add "sudo" before every command. >>>
+
+2. docker-compose
+https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-22-04
+
+> ------------------------------------------ DOCKER COMMANDS ---------------------------------------------------
+
+1. docker run <image> -> executes the image if found locally & if not, downloads it from dockerhub, creates a container from the image & then executes the app within the container.
+
+2. docker search <image> -> search for images available on Docker Hub
+
+3. docker pull <image> -> downloads the image from docker hub
+
+4. docker images -> To see the images that have been downloaded to your computer
+
+5. docker run -it <image> -> let’s run a container using the latest image of <image>
+It outputs the container id like:
+root@d9b100f2f636:/#
+other flags:
+-d -> runs the container in detached mode, leaving the container running in the background.
+-p -> redirects a public port to a private port inside the container e.g -p 41960:8080 -- here directs 8080 to 41960.
+--network=host -> to run in local host; no need of -p flag.
+
+6. docker ps -> shows all the active/running containers
+
+7. docker ps -a -> shows all the active as well as inactive images
+
+8. docker ps -l -> To view the latest container you created
+
+9. docker start <cotainer id> -> to start a stopped container.
+
+10. docker stop <cotainer id> -> to stop a running/active container.
+
+11. docker rm <cotainer id> -> to remove a container.
+
+12. docker commit -m "<description_of_what_u_did_to_image>" -a "<Author Name>" container_id <repository>/<"new_image_name">
+-> to save the state of a container as a new Docker image(docker images will show both the old and the new image)
+- repository is usually your Docker Hub username
+- -m -> commit message; -a -> specify the author
+
+13. Pushing Docker Images to a Docker Repository:
+a. docker login -u <docker-registry-username>
+b. docker tag <local username>/<docker-image-name> <docker-registry-username>/<docker-image-name>
+-> this is incase your local username and the docker registry username are not the same.
+c. docker push <docker-registry-username>/<docker-image-name>
+
+14. docker build . -t <dockerhub_username>/<image_repo_name>
+ 
+14. docker logs <container_id> -> prints out the logs of your app
+
+15. docker exec -it <container_id> -> enter the container
+
+> ------------------------------------------ DOCKER COMPOSE COMMANDS ---------------------------------------------------
+
+* 'docker compose' is used to run more than one images simultaneously at a single go.
+  otherwise using 'docker' you have to run multiple images individually.
+
+1. docker compose version -> show the version of the docker-compose
+
+2. docker compose up -d -> 
+downloads the necessary docker images, 
+creates a container for the service i.e web incase of compose demo(see the docker-compose.yml file),
+& 
+run the containerized environment in the background.
+
+
+3. docker compose logs -> shows all the logs
+
+4. docker compose pause -> pause the environment execution without changing the current state of your containers
+
+5. docker compose unpause -> resume execution after issuing a pause
+
+6. docker compose stop -> terminate the container execution, but it won’t destroy any data associated with your containers
+
+7. docker compose down -> to remove the containers, networks, and volumes associated with this containerized environment
+
+8. docker image rm nginx:alpine -> to remove the base image from your system

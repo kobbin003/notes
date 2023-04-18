@@ -1,0 +1,6 @@
+nhost:
+
+X4bknRueRY4g1e4W
+
+
+<npx prisma migrate dev> does not work; instead use <npx prisma db push>

@@ -1,0 +1,274 @@
+				--------------- ls -----------------------
+
+< ls > --> list all the files of "current" dir
+< ls <dir> > --> list all the files of "given" dir [should be present in the current directory]
+< ls a* > --> list all the files of all dir in the current dir that starts with "a" [*** case sensitive ]
+< ls [asd]* > --> list all the files of all dir, present in the current dir, that starts with "a" or "s" or "d"
+< ls [[:upper:]]* > ---> list all the files that starts with an "upper-case-character"
+< ls [[:lower:]]* > ---> list all the files that starts with an "lower-case-character"
+< ls *.txt > ---> list all the files in the current dir with "txt" extensions.
+< ls *.?? > ---> list all the files in the current dir with "any" extensions that are 2-characters long.
+< ls *.???? > ---> list all the files in the current dir with "any" extensions that are 3-characters long.
+
+			--------------- whereis, which and find -----------------------
+
+* which and wheris is used to find path of comannds; whereas find is used to find path of directories and files.
+
+< whereis <file_name> > --> locates the 'binary', 'source' and 'manual' files for the specified "command" names.
+< which <file_name> > --> returns the pathnames of the files (or links) which would be executed in the current environment
+			  i.e it returns only the 'executables'.
+< find <where> -name <file_name> > --> searches and returns the path for "file_name" in "where"-tree(not just in "where" dir).
+*** [ use -iname for case-insensitivity ]
+< find . -type d/f > --> returns path of all the dir(d) and files(f) in the current directory tree.
+
+other options:
+-size
+-executable
+-exec
+< find ./inhere -type f -size 1033c -not -executable -exec file {} + | grep -w ASCII >
+OR
+< find ./inhere -type f -size 1033c -not -executable -exec file {} \; | grep -w ASCII >
+This command will:
+-type f -size 1033c : find all "files" only which has size of 1033bytes.(c = byte)
+-not -executable : not executable
+-exec : runs the command following it for every found file.
+	- file : returns the file type
+	- {} : It is a placeholder for the name of each found file.
+	- | : In Linux and Unix-like systems, the "|" symbol (vertical bar) is used to create a pipe between two commands. A pipe is a mechanism that allows the output of one command to be used as the input of another command.
+		So here, the command will perform "grep" on the output of "find".
+-grep : returns those find output which has word ASCII in it.
+
+ ---------- end -exec with + or ; --------------
+ 
+When using +, the command is executed once, with all the found files as arguments. 
+This is also known as "batch processing".
+
+When using ;, the command is executed once for each found file. 
+This is also known as "single processing". 
+
+Using + can be more efficient than using ; because it avoids starting a new process for each file. 
+However, the command used with -exec must support multiple arguments. If the command doesn't support multiple arguments, 
+or if you need to execute a different command for each file, you should use ;. 
+
+ 			--------------------- directories ----------------------------
+ 
+< mkdir <dir_name> > ---> makes a directory in the current directory.
+< mkdir <dir_name/sub_dir> > ---> creates sub_dir inside dir_name, BUT dir_name has to exist.
+< mkdir --p <dir_name/sub_dir> > ---> createss sub_dir "even if" dir_name does not exist. It creates it along with sub_dir. 
+
+< mv [current_file] [destination_dir] > ---> cut and paste
+< cp [current_file] [destination_dir] >---> copy and paste
+
+< rm <file_name> > ---> deletes a file or directory
+< rm <file_name>* > ---> deletes all files starting with file_name
+< rm --dir/-d <dir_name> > --> removes an empty dir anmed dir_name
+ALTERNATIVELY: < rmdir <dir_name> > ---> removes empty dir_name.
+< rm -r <dir_name> > --> removes all the files and folder inside dir_name, along with the dir_name.
+			---------------------------------------------------------
+
+
+
+< echo //..somthing > ---> to print somthing on the screen.
+< date > ---> prints out the current date.
+< help < command > // OR // < command > --help > ---> to get help regarding the command.
+
+< man <command> > ---> gets the manual of the said command.
+< man <command> | less -p <word> >  ---> underlines all the instances of "word" in the manual of "command".
+
+< tree > --> shows the directory structure of the current directory.[ you have to install tree though]
+< pushd < path > > --> adds the given path on the stack(LIFO) and also "navigates" to that path.
+< popd > --> pops out the last path in the stack and also "navigates" to the current(i.e after the pop) last path on the stack.
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+1. chmod
+2. $PATH
+3. LINUX INTERNAL VARIABLES
+4. cat
+5. SSH
+
+-------------------------------------------------- chmod ---------------------------------------------------------------
+chmod -> the chmod command is used to change the access mode of a file.
+
+< chmod [reference][operator][mode] file...  >
+
+The references are used to distinguish the users to whom the permissions apply.
+i.e. they are list of letters that specifies whom to give permissions.
+Reference   Class     Description
+u          owner      file's owner
+
+g          group      users who are members of
+                      the file's group
+
+o          others     users who are neither the
+                      file's owner nor members of 
+                      the file's group
+
+a          all       All three of the above, same as ugo
+
+The operator is used to specify how the modes of a file should be adjusted.
+Operator  Description
++         Adds the specified modes to the
+          specified classes
+
+-         Removes the specified modes from 
+          the specified classes
+
+=         The modes specified are to be made
+          the exact modes for the specified 
+          classes
+
+The modes indicate which permissions are to be granted or removed from the specified classes.
+r       Permission to read the file.
+w       Permission to write (or delete) the file.
+x       Permission to execute the file, or, in
+        the case of a directory, search it.
+        
+------------------------------------------------ $PATH ---------------------------------------------------------------
+It is the location where your computer looks to execute any application
+
+< echo $PATH > 
+--> lists out all the path, separated by :
+
+* creating a "bin" directory in "/home" and then logging out makes the computer automatically 
+  set the path in the list of $PATH.
+  
+  *** HOW TO INCLUDE A PATH IN $PATH ****
+  < PATH="/path/to/be/included:$PATH" >
+
+------------------------------------------------ LINUX INTERNAL VARIABLES ----------------------------------------------
+$PATH  -> current dir path
+$HOME  -> home directory of the user path
+$BASH	-> bash path
+$BASH_VERSION -> version of bash
+$BASHPID -> process ID of the current instance of bash.
+
+$HOSTNAME -> system hosts name
+$HOSTTYPE -> system hardware
+$MACHTYPE -> machine type(hardware and os)
+$OSTYPE  -> operating sysytem type
+
+$PWD --> current working directory
+
+$SECOND -> seconds a script has been running
+
+$UID -> user id number as recorded in /etc/passwd
+
+$SHELL -> The type of shell 
+
+$0, $1, $2 etc -> positional parameters
+$-> flags passed to scripts
+
+----------------------------------------- view content of file in terminal --------------------------------------------
+     
+		---------------- cat --------------------
+cat --> concatenate
+used in:
+1. entering multiline string(used in bash scripting)
+< cat << EOF(*this means the start of multiline string)
+//..enter string
+//.enter string
+EOF(*this means the end of multiline string; you can use STOP instead) >
+
+2. reading text of a file and prints its output.
+< cat file_name > ---> prints the content of filename
+< cat > file_name > ---> creates a file named filename, if not found. BUT whatever you write replaces earlier content.
+< cat >> file_name > ---> creates a file file_name, if not found. BUT whatever you write here gets added to earlier content.
+< cat filename1 filename2 > ---> prints the content of filename1 and filename2
+< cat filename1 > filename2 > ---> prints the content, by copying the content of filename1 into filename2(content of file2 gets replaced by file1) 
+< cat filename1 >> filename2 > ---> prints the content, by copying the content of filename1 into the end of the content of filename2
+< cat *.txt > ---> shows the content of all text files in the current folder
+
+		------------- head & tail ----------------
+< head file_name > ---> prints the "FIRST" 10 lines of the file_name
+< head -n 2 file_name > ---> prints the "FIRST" 2 lines of the file_name.
+< tail file_name > ---> prints the "LAST" 10 lines of the file_name
+< tail -n 2 file_name > ---> prints the "LAST" 2 lines of the file_name.
+
+		------------- more & less -----------------
+< more file_name > ---> to view content of a file page by page[hit "SPACEBAR" to go to next page]
+< less file_name > ---> to view content of a file where we can do search filter.
+
+		----------------- grep --------------------
+< grep <pattern> file_name >  ---> prints out the line which contains the 'pattern'
+
+                ----- NAVIGATION through FILE CONTENT -----
+
+SPACEBAR ---> next page
+esc + v ---> previous page
+j ---> scroll down
+k ---> scroll up
+
+------------------------------------------- BANDIT -------------------------------------------------------------
+
+					1. SSH:
+- ssh (SSH client) is a program for logging into a remote machine and for executing commands on a remote machine.
+
+- < ssh <username>@<host> -p <PORT> >   ---> connect to <host> hosted at port <PORT> with username <username>
+  then they will prompt you to enter "password".
+  
+					2. open a file with prefix '-',:
+
+you have to enter full path of the file. 
+e.g to open "- located" :- < cat /path/- located >
+
+					3. open a file with spaces in it's name
+
+use '\'
+e.g to open "spaces in this filename" :- < cat spaces\ in\ this\ filename >
+
+					4. file file_name  
+-> shows the type of the file_name.
+
+					5. * wildcard
+- *.txt --> it means every file of .txt extension.
+- file* --> it means every file that starts with file.
+  
+					4. command 2> /dev/null
+( find / -user bandit7 -group bandit6 -size 33c 2> /dev/null )- bandit level6 - level7
+
+- In Unix-like operating systems, file descriptors 0, 1, and 2 are reserved for 
+standard input (stdin), standard output (stdout), and standard error (stderr), respectively.
+
+The 2> syntax redirects standard error output to a file or device instead of the screen (stdout).
+So in 2>/dev/null it redirects every error printed out in the screen to /dev/null.
+
+ [ if command >/dev/null: then it will direct every output of the command in /dev/null ].
+ 
+/dev/null:-
+ /dev/null exists on Unix-like operating systems. It is a special file that discards all data written to it, 
+and provides a way to redirect output that you do not need or want to see.
+
+When you write data to /dev/null, it is simply discarded, and no storage is used to hold the data. 
+This makes it a useful tool for suppressing unwanted output or throwing away data that you do not need.
+
+					5. sort and uniq:
+sort: < sort [options] [file] >
+it sorts the line 
+- alphabetically(default) / 
+- reverse(-r) / 
+- numerically(-n) / 
+- sort by specific column(-k${number} e.g -k2)
+- sort case-insensitively(-f)
+- outputs lines by removing it's duplicates(-u)
+
+uniq: <uniq [options] [file] >
+it filter adjacent matching lines
+options:
+-c: Prefix each line with the number of occurrences.
+-d: Only output lines that are duplicated.
+-i: Ignore case when comparing lines.
+-u: Only output unique lines (i.e. remove duplicates).
+
+since uniq only checks for unique lines that occur "immediately after each other" i.e adjacently.
+Therefore sort before uniq -u to find all the lines that are unique.
+
+					6. > vs >>
+command >/>> file.
+> writes the command output in the files. It results in replacing the previous content of the file.
+>> concatenates the command output with the previous content of the file. It does not result in the replacement of previous content. 
+
+7. How to use "|" inside -exec in find command:
+use: sh -c : In Bash, the sh -c command is used to execute a shell command from a string.
+i.e find [folder] -exec sh -c "[command1] | [command2]" \; 
+

@@ -1,0 +1,19 @@
+SENDING COMMANDLINE ARGUMENT TO NPM SCRIPT:
+
+so noramally we do this:
+"scripts":{
+	"start" : "node index.js"
+}
+
+and for running it we run < npm run start >
+
+WHaT IF WE WANT TO ADD ADDITIONAL ARGUMENT IN < npm run start >
+
+----------Solution------------->>>
+For this we do this:
+
+"scripts":{
+	"start" : "node index.js ${ARG}"    // curly braces mean it is OPTIONAL; remove it if you want it to be MANDATORY.
+}
+
+now run < ARG=<VALUE_OR_ARG> npm run start >

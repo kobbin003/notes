@@ -1,0 +1,17 @@
+bcrypt and jsonwebtoken
+
+import { hash, compare } from "bcrypt"
+
+const hashedPassword = await hash(password, saltRounds);
+
+const verify = await compare(password_input, hashedPassword_from_user_database);
+
+
+jsonwebtoken:
+const token = await jwt.sign( payload, APP_SECRET )
+
+const decoded_token_payload = await jwt.verify( token, APP_SECRET )
+
+
+---------------------------------------------------------------------------------------------------------------
+

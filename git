@@ -1,0 +1,98 @@
+git init         -----> initialize git
+git add .	------> adds file to commit
+git commit -m "message" ---> commits all the added file
+git branch -M main  ---> sets the branch in the remote repo.
+git remote add origin <remote_address> -> adds remote repo as origin
+git push -u origin main ---> pushes git in origin to main.
+
+git clean -i/-n/-f -d -> deletes all untracked files.
+	[i = interactive, 
+	n = Don’t actually remove anything, just show what would be done, 
+	f = force, 
+	d = directories as well]
+
+git log ---> prints the recent commits.
+git log --reflog --> prints all the commit history.
+git log --remotes --> prints all the commits that was pushed.
+
+git reset --hard HEAD ---> revert to last commit.
+	- removes & deletes files in the staging area added after the last commit.
+git reset   --> simply removes all the files in the "staged area" without deleting it.
+git reset <commitID> ---> reverts to the specified commit.("unstages" all files after that commit)
+git restore --staged <file_path/file_name>  --> removes the specific file from the "staged area".
+
+git checkout <commit_ID>  --> checkout the specified commit.[ reverts the HEAD to this specified Commit ]
+	You will get the following msg:
+	If you want to create a new branch to retain commits you create, 
+	you may do so (now or later) by using -c with the switch command. Example:
+
+  	git switch -c <new-branch-name> -------> new branch is created.
+
+	Or undo this operation with:
+
+  	git switch -
+git checkout <commit_ID> <file_name>  --> detaches the HEAD to the specific commit of a specific file.
+
+git show HEAD --> shows which commit your HEAD is, which is basically your latest commit.
+
+git branch -a --> list all remote and local branches. [local branches are marked with asterix*]
+git branch --> prints your working branch.
+git branch <new_branch_name> ---> creates a new branch. [ & then use checkout to go to that branch ]
+git branch -d <branch_name> --> deletes the specified branch.
+git checkout <branch_name>  --> switches the working branch to the specified branch.
+
+git merge <branch_name> ---> merges the branch_name with the current branch
+----------------------------------------------------------------------------------------------------------------------
+How to create pull request:
+
+
+----------------------------------------- How to merge pull request: -------------------------------------------------
+
+Step 1: Clone the repository or update your local repository with the latest changes.
+git pull origin main
+
+Step 2: Switch to the base branch of the pull request.
+git checkout main
+
+step before 3: git fetch
+
+Step 3: Merge the head branch into the base branch.
+git merge origin/<new_branch_of_patch>
+--> after this your local repo will get updated to remote repo.
+
+Step 4: Push the changes.
+git push -u origin main
+
+------------------------------------------------ pull, fetch & merge ---------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+step 1: find the latest commit that was pushed:
+
+    git log --remotes
+the topmost commit in the list will be the latest one.
+
+step 2:
+now you can go two ways:
+
+a> revert to that commit state:
+
+    git reset --hard <commit_ID>
+OR
+
+b> uncommit and unstage all the files after that commit
+
+    git reset <commit_ID>
+
+and remove all the untracked files:
+
+    git clean -f

@@ -1,0 +1,9 @@
+* 'splice':
+- returns the deleted item in 'array'
+- modifies the original array.
+
+* 'concat' can work like 'push' too.
+
+* 'filter' : for deleting items from array.
+* 'splice' : for deleting an item from array.
+* 'map' : for updating an item/items on the array.

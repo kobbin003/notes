@@ -1,0 +1,3 @@
+remove node_module -> " rm -rf node_module "
+remove package-lock.json -> " rm -r package-lock.json "
+install dependencies -> " npm i <package>"

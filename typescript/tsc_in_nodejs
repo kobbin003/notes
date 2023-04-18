@@ -1,0 +1,14 @@
+https://blog.logrocket.com/how-to-set-up-node-typescript-express/
+
+
+npm i -D typescript @types/express @types/node
+
+npx tsc --init --> generates tsconfig.json file
+* unmute the outDir in the tsconfig.json file
+* create a tsc file if some unkown error shows up in tsconfig.json file
+
+
+ALTERNATIVELY you can use:
+- tsc-node
+- deno
+etc...

@@ -1,0 +1,121 @@
+GRAPHQL:
+
+-------------------------------creating a graphql server using graphql-yoga----------------------------------------------
+
+< 1 > create schema with typeDefs and resolvers.
+const schema = createSchema({typeDefs:"...", resolvers:"..."})
+
+---------------------- typeDefs: 
+lists all the type. It includes all the non-scalar types, resolvers(include query, mutation, subscription, fields which return non-scalar types), 
+argmuent inputs, enum etc.
+
+* inside createSchema(), use 'readFileSync' from 'node:fs' to assign 'typeDefs' key with the path to 'schema.graphql' file.
+	writing it manually did not worked for me.
+
+---------------------- resolvers:
+the following resolver functions are to be made:
+Query
+Mutation
+subscription
+custom resolver functions for Non-Scalar types
+
+resolver function arguments:
+a. parent : the parent non-scalar type which has a key that is of another non-scalar type.
+	for e.g
+	const db = {
+	users = [{ id : 1 },{ id : 2 }]
+	posts = [{ id : 11, author : 1 }, { id : 12, author : 2 }]
+	
+	        type User { id:ID, posts: [Post!]! }
+		type Post { id:ID, author: User! }
+		User = {
+			posts:(parent,_,_,_) => db.posts.filter(post=> post.author === parent .id)
+		        }
+		similiarly
+		Post = {
+			 user: (parent,_,_,_) => db.users.find(user => user.id === parent.author )
+		        }
+	** in such 1-n relation, the one which is 1 is given a value which equals to one of the key of the other part.
+	   like in this above example, a post can have only one author. Therefore post is given author as a field with a value
+	   that equals to the id of user.
+		
+b. argument : arguments passed with calling the resolver function.
+c. context : it is the object passed as the value of context key in createYoga.
+d. info : It is the information of the query called on the graphql API.
+	  (https://www.prisma.io/blog/graphql-server-basics-demystifying-the-info-argument-in-graphql-resolvers-6f26249f613a)
+	  
+< 2 > create yoga:
+const yoga = createYoga({
+	schema,
+	graphqlEndpoint: "/",
+	landingPage: false, //this will take u directly to GraphiQL
+	context: {
+		db,
+		pubsub,  // pubsub = createPubsub(); used for publishing and subscribing.
+		context: createContext(), // createContext() returns {prisma}, where prisma = new prismaClient
+					  // This is how to can perform CRUD operation on the database, that is 
+					  connected through prisma, through graphql API.
+	},
+});
+
+< 3 > create server:
+const server = createServer(yoga);
+
+< 4 > listen to server
+server.listen(PORT_NO,()=>{........do something.})
+
+---------------------------------------------- HANDLING ERROR -----------------------------------------------------------
+to show the custom error message in the graphql playground like graphiQL
+import { GraphQLError } from "graphql";
+and then
+instead of throwing Error, do the follwing:-
+
+throw new GraphQLError('msg',{extensions:{//extra info}})
+
+-------------------------------------- how to provide data for custom/non-scalar type ----------------------------------
+use "connect":
+e.g:
+model User{
+id String
+}
+model Post{
+id String
+author User
+}
+prisma.post.create({
+id:uuid4(),
+author:{
+	connect:{
+		id:< provided_id_of_user >
+		}
+	}
+})
+
+---------------------------------------------------- CONTEXT -----------------------------------------------------------
+const yoga = createYoga({
+	context://this is the user context.
+})
+
+while accessing context in the resolver functions: context = {context, ...intialContext}
+
+default context => initialContext = { request, params }
+user context => whatever we give; it gets merged with initial/default context
+	user context can be :
+	1. an object. i.e context: {}
+	2. a function returning an object. i.e context:()=>{ return {}}
+	3. an async function which will return a promise that resolves to an object. i.e context: async () =>({})
+	
+---------------------------------------------------- AUTHENTICATION ----------------------------------------------------
+- set currentUser in the context of createYoga Options.
+- when request.header !== null
+	- parse the authorization key to get the 'token'
+	- decode the token to get its payload, by which we will get the user's id
+	- prisma.find the user with that id.
+	- check if token we received is the same as the user's currentToken.
+	- return the user.
+	
+------------------------------------------------- FRAGMENTS -----------------------------------------------------------
+fragment_<variable_name>_on_<type we are selecting from> {
+...fields we want
+}
+

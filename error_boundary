@@ -1,0 +1,8 @@
+Error boundary:
+
+It is created to handle ui error.
+It keeps the react from rendering empty page, which is a very bad ux.
+
+- error boundary is a react component.
+- It can only be a class component, cant be a function component.
+- inside the class component there is a static method called getDerivedStateFromError(), which runs when the component or its children gets error.

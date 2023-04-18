@@ -1,0 +1,7 @@
+find the location:- " whereis <package> "
+go to the location and delete the file/folder:- " rm <file> "/ " rm -r <non-empty-folder> " / " rm -d <empty-folder> "
+
+
+OR
+
+" npm uninstall -g <package> "

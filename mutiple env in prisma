@@ -1,0 +1,8 @@
+install dotenv-cli
+< npm install -g dotenv-cli >
+
+create an env file (say .env.dev)
+
+to access the keys in that file, start every script with "dotenv -e .env.dev" 
+
+"script_name" : "dotenv -e .env.dev //..script"

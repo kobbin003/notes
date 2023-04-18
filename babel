@@ -1,0 +1,22 @@
+How to use babel?
+
+1. installation:
+npm install --save-dev @babel/cli @babel/core @babel/preset-env
+
+2. configure babel:
+create babel.config.json file;
+{
+    "presets": ["@babel/preset-env"]
+}
+
+3. add script(in package.json):
+
+"scripts": {
++   "build": "babel src -d dist --copy-files --delete-dir-on-start",
+    "start": "npm run build && node dist/index.js"
+  }
+  
+- build will compile your js files in 'src' folder into the 'dist' folder.
+
+- --copy-files => builds non-js files e.g .graphql
+- --delete-dir-on-start => deltes files in 'dist' folder which has been deleted in 'src' folder. i.e updates the build output folder.

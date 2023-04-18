@@ -1,0 +1,16 @@
+TESTING:
+
+error: "command jest not found"
+
+solution: add script:{ "test" : "jest" }
+	  run < npm test >
+	  --- This solved the issue for me.
+	  
+	  ------------OR-----------------
+	  use npx:
+	  < npx jest >
+	  
+---------- objectContaining v/s object -------------
+former is used if you want to check wheteher a specific property is present in the object, you don't care about other properties.
+WHEREAS
+later is used if you want to check whether the result is of the exact structure.

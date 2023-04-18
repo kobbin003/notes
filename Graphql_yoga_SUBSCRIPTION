@@ -1,0 +1,45 @@
+GRAPHQL-SUBSCRIPTION:
+* It is basically subscribing(pubsub.subscribe()) to a model/schema e.g post;
+ and whenever there is change in post data, through creation or updation or deletion,
+ we can get the message automatically(pubsub.publish())
+
+
+pubsub.subscribe("channel_name", unique_id)
+
+pubsub.publish("channel_name",unique_id, return_item)
+
+*unique_id is an optional argument, which can be provided to provide some condition.
+
+if provided, then the published item will show up only if the unique_id provided in the argument is same for subscription as well as mutation resolver function.
+e.g in andrew mead's course:
+if we subscribe
+subscription {
+  comment(postId: "11") {
+    id
+    text
+    author {
+      name
+    }
+ }
+ if we mutate i.e create comment:
+ mutation{
+  createComment(data:{text:"subscribing",postId:"12",author:"3"}){
+id
+    text
+    author{
+      name
+    }
+  }
+
+}
+
+case_without_unique_id :- comment on post12 will show up in subscription.
+case_with_unique_id :- comment on post12 will not show up in subscription; comment would have shown up only if the createComment's postId:"11"
+
+
+--------------------------------------------------------------
+
+if(ERR Error: Cannot return null for non-nullable field < >)
+-> this means that there is some problem in the return argument of pubsub.publish
+
+---------------------------------------------------------------

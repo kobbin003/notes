@@ -1,0 +1,67 @@
+create graphql api server with graphql-yoga
+
+ 1 - install prisma and <npx prisma init>; then connect to database(nhost).
+
+ 2 - inside "prisma.schema" "create model" as per "schema.graphql" of the graphql API
+
+ 3 - <npx prisma db push> to update database with new tables as per model in "prisma.schema"
+
+ 4 - create "context" with prismaClient and pass it as the context in createYoga.
+
+	Now you can peform CRUD operation on the database through the resolver functions(ctx i.e 3rd arg of the resolver func) 
+	of graphql-api.
+	for. eg:
+	ctx.context.prisma.<model>.<prisma_query>
+
+* remember that altough model is "capital_case" in prisma.schema, while querying use "lower_case".
+
+* convert resolver function into an async function since prisma query returns a promise.
+
+ 5 - make to client to interact with prisma & database through 'node server ONLY'; cut-off the graphql playground route,
+     through which the client can directly interact with the database.
+     
+     - set up authorization.
+     - lockdown routes to make it available only for authorized users.
+ 
+ 6 - hide those fields(relational) which are not to be viewed by other than the currentUser.
+ 	e.g: user.js -> email resolver function.
+
+--------------------------------------------- schema.graphql vs schema.prisma ------------------------------------------
+
+type in schema.graphql is for graphql playground.
+
+model in schema.prisma is for database.
+add this after the user.create function:-
+
+    const {password, ...userWithoutPassword} = user;
+    return userWithoutPassword;
+   
+-------------------------------------------- select/exclude fields in return objects ------------------------------------
+
+- select: use the "select" option in prisma to output the selected fields of the model.
+
+- exclude: using "select" option will be too cumbersome for big object.
+	 Better to use < delete object["field_to_be_excluded"] >
+	 OR u can use destructuring and rest params to extract the selected fields in this way:
+	 const { fields_to_be_excluded, ...rest } = object;
+	 return rest;
+
+------------------------------------------- .env VARIABLES -----------------------------------------------------------
+
+create all these 3 .env files :
+1> .env.development in root folder --> acces with NODE_ENV=development before development command script
+2> .env.test in root folder ---> access it with NODE_ENV=test before a test command script
+3> .env in root/prisma/ ---> place it because for deployment prisma first looks for .env i root folder then in root/prisma folder.
+
+---------------------------------- AUTO GENERATION OF TYPES FOR YOUR GRAPHQL RESOLVERS:---------------------------------
+  
+ 1 - installation:
+ < npm install -D @graphql-codegen/cli @graphql-codegen/typescript-resolvers @graphql-codegen/typescript >
+ 
+ 2 - create codgen config file.(in the base of the directory)
+ 
+ 3- add scripts: { "generate" : "graphql-codegen" }
+ 
+ 4. run: < npm run generate > ----> this will create resolvers-types.ts file which contains all the resolver types.
+ 
+ [ https://the-guild.dev/graphql/codegen/docs/guides/graphql-server-apollo-yoga }

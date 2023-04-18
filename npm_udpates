@@ -1,0 +1,15 @@
+npm updates:
+
+- npm list -> lists all the packages with its current installed version.
+
+- npm outdated -> lists all the outdated package with it's current installed and latest available version in a tabular fashion.
+
+- npm update --save/--save-dev --> ***not working for me.
+
+- use npm-check-updates: npm i -g npm-check-updates
+Then use these commands:
+
+1. ncu    -> Checks for updates from the package.json file
+2. ncu -u ->Update the package.json file
+3. npm install -> update installed packages and package-lock.json/
+[npm update --save --> Update your package-lock.json file from the package.json file]

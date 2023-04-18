@@ -1,0 +1,76 @@
+- nhost -> cloud postgresql
+- dbeaver -> postgresql client
+- to learn -> https://www.postgresqltutorial.com/
+
+------------------------------------------------ COMMANDS -------------------------------------------------------------
+CONSTRAINTS: 
+UNIQUE -> value should be unique in the column, 
+NOT NULL -> its value cannot be null, 
+PRIMARY KEY(combination of UNIQUE and NOT NULL) -> used to uniquely identify a row.
+SERIAL -> auto increments the value of the column
+DEFAULT <VALUE> -> set the default value of the column
+
+--------------------------------------------- MANAGING TABLE --------------------------------------------------------------------
+1. create a table
+CREATE TABLE [IF NOT EXISTS] table_name(
+   pk SERIAL PRIMARY KEY,
+   c1 type(size) NOT NULL,
+   c2 type(size) NULL,
+   ...
+);
+
+2. add a new column to the table
+ALTER TABLE table_name ADD COLUMN new_column_name TYPE;
+
+3. Remove a column from the table
+ALTER TABLE table_name DROP COLUMN column_name;
+
+4. rename a column from the table:
+ALTER TABLE table_name RENAME column_name TO new_column_name;
+
+5. delete a table:
+DROP TABLE [IF EXISTS] table_name CASCADE;
+
+-------------------------------------------- QUERYING --------------------------------------------------------------------
+
+1. Query all data from a table
+SELECT * FROM table_name;
+
+2. Query data from specified columns of all rows in a table
+SELECT column_list
+FROM table_name;
+
+3. Query data and select only unique rows:
+SELECT DISTINCT (column)
+FROM table_name;
+
+4. Query data from a table with a filter:
+SELECT *
+FROM table_name
+WHERE condition;
+
+5. Assign an alias to a column in the result set
+SELECT column_1 AS new_column_1, ...
+FROM table;
+
+------------------------------------------------------ MODIFYING DATA ---------------------------------------------------
+
+1. insert a new row in the table:
+INSERT INTO table(column1,column2,...)
+VALUES(value_1,value_2,...);
+
+2. insert multiple rows in the table:
+INSERT INTO table_name(column1,column2,...)
+VALUES(value_1,value_2,...),
+      (value_1,value_2,...),
+      (value_1,value_2,...)...
+
+3. delete all rows from table
+DELETE FROM table_name;
+
+4. delete rows based on condition
+DELETE FROM table_name
+WHERE condition;
+
+
+

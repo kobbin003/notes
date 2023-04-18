@@ -1,0 +1,5 @@
+USEFUL NPM PACKAGES:
+
+1. npm i pretty-format -> to prettify JSON in console output in the terminal.
+
+** instead you can use console.log(JSON.stringify(data,null,1))

@@ -1,0 +1,41 @@
+BASH SCRIPTING:
+a script is basically a list of commands to be executed in a single go.
+
+---------------------- HOW TO WRITE A SCRIPT AND EXECUTE IT --------------------------------------------------
+< nano > ---> opens the nano editor
+
+create a file with the needed commands
+	#!/bin/bash  ---> tells that we will be using "bash" shell
+	* there are many shells other than "bash" shell
+	* every linux and unix computer in the world is compatibale with "sh" shell.
+	* add command location before a command; because it may not be in the same path for other users.
+	[ use this command to find the location of the command in your computer: < which < command_name > >
+	
+	* < exit > remember to exit the script by using < exit > command at the end of a script.
+	
+save the file with a name( for e.g "xxx")
+
+move the file into the " /home/bin "--> this is the local bin, only you can accesss the file.
+				     If you want every user in your computer to accesss this script, then move the script in the 
+				     following dir: " /usr/local/bin "
+
+execute it < xxx >
+***[ before executing it changes its mode to executable by(< chmod +x xxx >) ]
+
+--------------------------------------------- VARIABLES ----------------------------------------------------------
+reading variable always starts with a '$' sign
+
+assigning variable; e.g FOO=KOB
+read variable: echo $FOO --> prints out KOB
+
+assigning variable a command:- FOO="$(< command >)"
+
+------------------------------------------------ FUNCTIONS ------------------------------------------------------
+SYNTAX:
+declaration:-
+function_name(){
+//..what to do
+}
+
+invocation:-
+function_name
